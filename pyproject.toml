@@ -1,0 +1,20 @@
+[project]
+name = "multi-agents-research-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "beautifulsoup4>=4.14.3",
+    "groq>=0.37.1",
+    "langchain>=1.2.15",
+    "langchain-community>=0.4.1",
+    "langchain-core>=1.2.29",
+    "langchain-experimental>=0.4.1",
+    "langchain-groq>=1.1.2",
+    "langchainhub>=0.1.21",
+    "lxml>=6.0.4",
+    "python-dotenv>=1.2.2",
+    "requests>=2.33.1",
+    "tavily-python>=0.7.23",
+]
