@@ -11,23 +11,21 @@ load_dotenv()
 TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
 
 
-@tool(
-    name="research_tool",
-    description="Use this tool whenever you need to do some research on the web from certain topics",
-)
+@tool("research_tool")
 def web_search(query: str) -> str:
-    """Use this tool to do research on web for provided topic. Returns Titles, URLs and Snippets."""
+    """Use this tool whenever you need to do some research on the web from certain topics. Returns Titles, URLs and Snippets."""
     try:
-        tavily = TavilyClient(api_key=TavilyClient)
-        response = tavily.search(query=query, max_results=5)
+        tavily = TavilyClient(api_key=TAVILY_API_KEY)
+        response = tavily.search(query=query, max_results=3)
 
         outputs = []
 
         for result in response.get("results"):
+            snippet = (result.get("content") or "")[:400]
             outputs.append(
                 f"Title: {result.get('title')}\n"
                 f"URL: {result.get('url')}\n"
-                f"Snippet: {result.get('content')}\n"
+                f"Snippet: {snippet}\n"
             )
 
         return "\n___\n".join(outputs)
@@ -35,12 +33,9 @@ def web_search(query: str) -> str:
         return f"Error while searching on the web: {str(e)}"
 
 
-@tool(
-    name="reader_tool",
-    description="Use this tool to scrape contents from web pages for more deeper readings.",
-)
+@tool("reader_tool")
 def scrape_webpage(url: str) -> str:
-    """Use this tool to scrape contents from web pages for more deeper readings"""
+    """Use this tool to scrape contents from web pages for more deeper readings."""
     try:
         response = requests.get(
             url=url,
@@ -52,6 +47,6 @@ def scrape_webpage(url: str) -> str:
         for tag in soup(["style", "script", "nav", "footer", "header"]):
             soup.decompose()
 
-        return soup.get_text(separator=" ", strip=True)[:3000]
+        return soup.get_text(separator=" ", strip=True)[:1500]
     except Exception as e:
         return f"Error while scraping webpage: {str(e)}"

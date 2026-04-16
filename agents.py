@@ -11,7 +11,7 @@ load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 
-model = ChatGroq(model="groq:openai/gpt-oss-20b", temperature=0.3)
+model = ChatGroq(model="openai/gpt-oss-20b", api_key=GROQ_API_KEY, temperature=0.3)
 
 
 def create_research_agent():
@@ -23,13 +23,14 @@ def create_reader_agent():
 
 
 writer_prompt = ChatPromptTemplate.from_messages(
-    (
-        "system",
-        "You're a helpful agent that researches on the web and writes professional reports on that topic.",
-    ),
-    (
-        "human",
-        """Write a detailed and concise report on the topic below
+    [
+        (
+            "system",
+            "You're a helpful agent that researches on the web and writes professional reports on that topic.",
+        ),
+        (
+            "human",
+            """Write a detailed and concise report on the topic below
 
     Topic: {topic}
 
@@ -45,7 +46,8 @@ writer_prompt = ChatPromptTemplate.from_messages(
 
     Be detailed, factual and concisely professional.
     """,
-    ),
+        ),
+    ]
 )
 
 
@@ -53,14 +55,15 @@ writer_chain = writer_prompt | model | StrOutputParser()
 
 
 critic_prompt = ChatPromptTemplate.from_messages(
-    (
-        "system",
-        "You're a helpful, sharp and constructive critic. Be honest and specific.",
-    ),
-    (
-        "human",
-        """Review the search report below and evaluate it strictly
-    
+    [
+        (
+            "system",
+            "You're a helpful, sharp and constructive critic. Be honest and specific.",
+        ),
+        (
+            "human",
+            """Review the search report below and evaluate it strictly
+
     Report:
     {report}
 
@@ -82,7 +85,8 @@ critic_prompt = ChatPromptTemplate.from_messages(
     Final verdict:
     ...
     """,
-    ),
+        ),
+    ]
 )
 
 
