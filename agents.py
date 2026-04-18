@@ -11,7 +11,7 @@ load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 
-model = ChatGroq(model="openai/gpt-oss-20b", api_key=GROQ_API_KEY, temperature=0.3)
+model = ChatGroq(model="qwen/qwen3-32b", api_key=GROQ_API_KEY, temperature=0.3)
 
 
 def create_research_agent():
